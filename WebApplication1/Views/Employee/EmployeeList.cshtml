@@ -1,0 +1,45 @@
+﻿@model List<WebApplication1.ViewModel.EmployeeListViewModel>
+ 
+@{
+    ViewBag.Title = "EmployeeList";
+}
+
+<div class="container">
+    <h2>Employee List</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Designnation</th>
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="@WebApplication1.Config.GlobalConstant.DomainUrl/Edit/@item.ID" style="text-decoration:none" title="Edit"> <i class="glyphicon glyphicon-eye-open"></i></a>
+                            <a href="@WebApplication1.Config.GlobalConstant.DomainUrl/Delete/@item.ID" style="text-decoration:none" title="Delete"> <i class="glyphicon glyphicon-trash"></i></a>
+
+                        </td>
+                        <td>@item.Name</td>
+                        <td>@item.Email</td>
+                        <td>@item.Designation</td>
+                        <td>@item.Country</td>
+
+                    </tr>
+                }
+
+            }
+
+
+        </tbody>
+    </table>
+</div>
+
