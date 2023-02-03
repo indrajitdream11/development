@@ -1,0 +1,69 @@
+﻿@model WebApplication1.ViewModel.EmployeeListViewModel
+
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">Manage Employee</h2>
+           
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Name:</label>
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Country:</label>
+                @Html.DropDownListFor(m => m.CountryID, @ViewBag.ddl as SelectList,"Select Country" ,new { @class = "form-control" })
+                @Html.HiddenFor(m=>m.ID)
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="save()">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btncancel">Cancel</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#btncancel').click(function () {
+            $('#editmodal').hide();
+        })
+    })
+    function save() {
+        if ($('#Name').val() == '')
+        {
+            alert("Enter name");
+            return;
+        }
+        if ($('#Email').val() == '') {
+            alert("Enter email");
+            return;
+        }
+        if ($('#CountryID').val() == '') {
+            alert("select country");
+            return;
+        }
+        $.ajax({
+            url: $('#hdnaddediturl').val(),
+            type: 'POST',
+            data: { id: $('#ID').val(), Name: $('#Name').val(), Email: $('#Email').val(), CountryID: $('#CountryID').val()},
+            success: function (res) {
+                if (res.Successful) {
+                    window.location.reload();
+                } else {
+                    alert(res.Message)
+                }
+               
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+</script>
+

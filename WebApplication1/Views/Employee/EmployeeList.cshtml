@@ -1,0 +1,89 @@
+﻿@model List<WebApplication1.ViewModel.EmployeeListViewModel>
+ 
+@{
+    ViewBag.Title = "EmployeeList";
+    var totalrecord=0;
+    if (Model != null)
+    {
+        totalrecord = Model.Count();
+    }
+}
+
+<div class="container">
+    <h2>Employee List</h2>
+    <br />
+    <button class="btn btn-primary" onclick="Add()"  title="Add"> <i class="glyphicon glyphicon-plus-sign"></i> Add</button>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Name</th>
+                <th>Email</th>
+               
+                <th>Country</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0)" onclick="Edit(@item.ID)" style="text-decoration:none" title="Edit"> <i class="glyphicon glyphicon-eye-open"></i></a>
+                            <a href="@WebApplication1.Config.GlobalConstant.DomainUrl/Employee/Delete/@item.ID" style="text-decoration:none" title="Delete"> <i class="glyphicon glyphicon-trash"></i></a>
+
+                        </td>
+                        <td>@item.Name</td>
+                        <td>@item.Email</td>                    
+                        <td>@item.Country</td>
+
+                    </tr>
+                }
+
+            }
+
+
+        </tbody>
+    </table>
+    <p>Record returned:@totalrecord</p>
+</div>
+<input type="hidden" value="@Url.Action("Edit","Employee")" id="hdnediturl"/>
+<input type="hidden" value="@Url.Action("AddEdit","Employee")" id="hdnaddediturl"/>
+<input type="hidden" value="@Url.Action("Add","Employee")" id="hdnaddurl"/>
+<div class="modal" tabindex="-1" role="dialog" id="editmodal">
+    
+</div>
+<script>
+    function Edit(id) {
+        $.ajax({
+            url: $('#hdnediturl').val(),
+            type: 'POST',
+            data: { id: id },
+            success: function (html) {
+                $('#editmodal').html('');
+                $('#editmodal').html(html);
+                $('#editmodal').show();
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+    function Add() {
+        $.ajax({
+            url: $('#hdnaddurl').val(),
+            type: 'POST',
+           
+            success: function (html) {
+                $('#editmodal').html('');
+                $('#editmodal').html(html);
+                $('#editmodal').show();
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    }
+</script>
+
